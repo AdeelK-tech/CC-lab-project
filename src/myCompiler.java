@@ -1,5 +1,7 @@
 import Utili.myUtil;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -52,9 +54,85 @@ public class myCompiler {
              "super"
         }
      };
+     public String[][] operators={
+         {"+","pm"},
+         {"-","pm"},
+         {"*","mdm"},
+         {"/","mdm"},
+         {"%","mdm"},
+         {"<","RO"},
+         {">","RO"},
+         {"<=","RO"},
+         {">=","RO"},
+         {"==","RO"},
+         {"!=","RO"},
+         {"&&","&&"},
+         {"||","||"},
+         {
+         "!","!"
+         },
+         {"++","inc/dec"},
+         {"--","inc/dec"}
+     };
+     public String[] punctuators={";",":",",","(",")","{","}","[","]","."};
 
 
-    
+     public String isKW(String s){
+         for (int i=0;i<keywords.length;i++) {
+             if (s.equals(keywords[i][0])) {
+                 return keywords[i][1];
+             }
+         }
+         return "";
+     };
+     public String isOp(String s){
+     for(int i=0;i<operators.length;i++){
+     if(s.equals(operators[i][0])){
+     return operators[i][1];
+     }
+     }
+     return "";
+     };
+public boolean isPunctuator(String s){
+         for (String punctuator : punctuators) {
+             if (s.equals(punctuator)) {
+                 return true;
+             }
+         }
+return false;
+};  
+
+public boolean isIdentifier(String s){
+Pattern p=Pattern.compile("[_a-zA-Z][_a-zA-Z0-9]*");
+Matcher m=p.matcher(s);
+return m.matches();
+};
+
+public boolean isChar(String s){
+Pattern p=Pattern.compile("'(\\\\[tvrnafb\\\\]|[^\\\\'])'");
+Matcher m=p.matcher(s);
+return m.matches();
+};
+
+public boolean isDouble(String s){
+Pattern p=Pattern.compile("^[+-]?(0|([1-9][0-9]*))(\\.[0-9]+)?$");
+Matcher m=p.matcher(s);
+return m.matches();
+};
+
+public boolean isString(String s){
+Pattern p=Pattern.compile("\".*?\"");
+Matcher m=p.matcher(s);
+return m.matches();
+};
+
+public boolean isIntconst(String s){
+Pattern p=Pattern.compile("[+-]?[0-9]+");
+Matcher m=p.matcher(s);
+return m.matches();
+};
+
+
  public ArrayList <String> breakWords(String fileInput){
         String temp="";
          ArrayList <String> allChars = new ArrayList();
